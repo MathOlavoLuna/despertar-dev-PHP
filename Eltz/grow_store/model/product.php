@@ -1,23 +1,23 @@
 <?php
-require_once("./utils/next_id.php");
+require_once('./utils/next_id.php');
 
 class Product
 {
-    public $id;
-    public $name;
-    public $description;
-    public $price;
-    public $score;
-    public $available;
+    private $id;
+    private $name;
+    private $description;
+    private $price;
+    private $available;
+    private $score;
 
-    public function __construct($nameP, $descriptionP, $priceP, $scoreP, $availableP = true)
+    public function __construct($nameP, $descriptionP, $priceP,$available = true, $scoreP=0)
     {
         $this->id = createId();
         $this->name = $nameP;
         $this->description = $descriptionP;
         $this->price = $priceP;
-        $this->score = $scoreP;
-        $this->available = $availableP;
+        $this->available = $available;
+        $this->score=$scoreP; 
     }
 
     public function add($productData)
@@ -26,31 +26,67 @@ class Product
         return $productData;
     }
 
-    public static function list($productData)
+    public function getId(){
+        return $this->id;
+    }
+    public function update()
     {
-        echo "Lista de usuários<br><hr>";
-        foreach ($productData as $value) {
-            echo "Nome: " . $value->name . "<br>";
-            echo "Preço: " . $value->price . "<br>";
-            echo "Descrição: " . $value->description . "<br>";
-            echo 'Disponível: ' .  $value->available ? "Em Estoque!" : "Em falta!" . "<br>";
-            echo "<br><hr>";
-        }
     }
 
     public static function show($idP, $productData)
     {
-        $filtered = array_filter($productData, function ($item) use ($idP) {
-            return $item->id == $idP;
-        });
+        $filtered = array_values(array_filter($productData, function ($item) use ($idP) {
+            return $item->id == $idP; 
+        })
+    );
+
+    var_dump($filtered);
+
                 
         if ($filtered) {
             echo "Nome: " . $filtered[0]->name . "<br>";
+            echo "Descrição " . $filtered[0]->description . "<br>";
             echo "Preço: " . $filtered[0]->price . "<br>";
-            echo "Estoque: " . $filtered[0]->available ? "Em Estoque!" : "Em falta!" . "<br>";
+            echo $filtered[0]->available ? "Status: Disponível!" : "Status: Indisponível!" . "<br>";
             echo "<br><hr>";
         } else {
             echo "Produto não encontrado.";
         }
-}
+    }
+
+    public function delete($idP)
+    {
+    }
+
+    public static function list($userData)
+    {
+        echo "Lista de produtos:<br><hr>";
+        foreach ($userData as $value) {
+            echo "Nome: " . $value->name . "<br>";
+            echo "E-mail: " . $value->email . "<br>";
+            echo $value->active ? "Status: Ativo!" : "Status: Inativo!" . "<br>";
+            echo "<br><hr>";
+        }
+    }
+
+    public static function getScore($arrayComents, $productID, $productData){
+        $total=0;
+        $cont=0;
+        foreach ($arrayComents as $value) {
+            if ($value->productId==$productID) {
+                $total+=$value->score;
+                $cont++;
+            }
+        }
+
+        $filtered = array_values(array_filter($productData, function ($item) use ($productID) {
+            return $item->id == $productID; 
+        }));
+
+        if ($filtered) {
+            $filtered[0]->score =$total/$cont;
+        }
+    }
+    
+
 }

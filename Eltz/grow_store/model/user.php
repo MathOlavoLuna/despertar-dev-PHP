@@ -1,6 +1,5 @@
 <?php
-
-require_once("./utils/next_id.php");
+require_once('./utils/next_id.php');
 
 class User
 {
@@ -25,15 +24,22 @@ class User
         return $userData;
     }
 
+    public function getId(){
+        return $this->id;
+    }
     public function update()
     {
     }
 
     public static function show($idP, $userData)
     {
-        $filtered = array_filter($userData, function ($item) use ($idP) {
-            return $item->id == $idP;
-        });
+        $filtered = array_values(array_filter($userData, function ($item) use ($idP) {
+            return $item->id == $idP; 
+        })
+    );
+
+    var_dump($filtered);
+
                 
         if ($filtered) {
             echo "Nome: " . $filtered[0]->name . "<br>";
