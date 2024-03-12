@@ -1,0 +1,6 @@
+<?php 
+    $pedidos = [];
+
+    $valorTotal;
+
+?>
