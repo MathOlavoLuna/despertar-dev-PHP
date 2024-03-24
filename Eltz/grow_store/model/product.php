@@ -29,8 +29,15 @@ class Product
     public function getId(){
         return $this->id;
     }
-    public function update()
-    {
+    
+    public function editProduct($idP, $productData,$newName, $newPrice, $newAvailable){
+        foreach ($productData as $key => $products) {
+            if($idP == $products->id){
+                $products->name = $newName;
+                $products->price = $newPrice;
+                $products->available = $newAvailable;
+            }
+        }
     }
 
     public static function show($idP, $productData)
@@ -54,8 +61,13 @@ class Product
         }
     }
 
-    public function delete($idP)
-    {
+    public static function delete($idP, $productData){
+        foreach ($productData as $key => $products) {
+            if($idP == $products->id){
+                unset($productData[$key]);
+                return $productData;
+            }
+        }
     }
 
     public static function list($userData)

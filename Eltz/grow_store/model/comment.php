@@ -21,7 +21,6 @@ class Comment
 
     public function add($commentData)
     {
-        // var_dump($commentData);
         array_push($commentData, $this);
         return $commentData;
     }
@@ -29,8 +28,13 @@ class Comment
     public function getId(){
         return $this->id;
     }
-    public function update()
-    {
+
+    public function editComent($idP, $commentData, $newContent){
+        foreach ($commentData as $key => $coments) {
+            if($idP == $coments->id){
+                $coments->content = $newContent;
+            }
+        }
     }
 
     public static function show($idP, $commentData)
@@ -54,8 +58,15 @@ class Comment
         }
     }
 
-    public function delete($idP)
+    public static function delete($commentData,$idP)
     {
+        foreach ($commentData as $key => $comment) {
+            if($comment->id==$idP){
+                unset($commentData[$key]);
+                return $commentData;
+            }
+        }
+        
     }
 
     public static function list($userData)
